@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useFetch from './hooks/useFetch';
 
-const API_ENDPOINT = 'https://api.openweathermap.org/data/2.5/onecall';
-const API_KEY = process.env.REACT_APP_WEATHER_KEY;
-const LOCATION_KEY = process.env.REACT_APP_LOCATION_KEY;
-
 const DataContext = React.createContext();
 
 const DataProvider = ({ children }) => {
@@ -18,7 +14,7 @@ const DataProvider = ({ children }) => {
     setError && setError(false);
     if (!callInfo) return;
 
-    const url = `${API_ENDPOINT}?lt=${callInfo?.lat}&lon=${callInfo?.lon}&units=${callInfo?.unit}&appid=${API_KEY}`;
+    const url = `/api/forecast?lat=${callInfo?.lat}&lon=${callInfo?.lon}&units=${callInfo?.unit}`;
     const data = await getData(url);
 
     if (!data) {
@@ -28,6 +24,7 @@ const DataProvider = ({ children }) => {
     }
 
     setForecast(data);
+    return data;
     setLoading && setLoading(false);
   };
 
@@ -36,7 +33,7 @@ const DataProvider = ({ children }) => {
     setError && setError(false);
     if (!callInfo) return;
 
-    const url = `${API_ENDPOINT}/timemachine?lat=${callInfo.lat}&lon=${callInfo.lon}&units=${callInfo.unit}&dt=${time}&appid=${API_KEY}`;
+    const url = `/api/historical?lat=${callInfo.lat}&lon=${callInfo.lon}&units=${callInfo.unit}&dt=${time}`;
     const data = await getData(url);
 
     if (!data) {
@@ -52,7 +49,7 @@ const DataProvider = ({ children }) => {
   };
 
   const setDefaultInfo = async () => {
-    const url = `https://geolocation-db.com/json/${LOCATION_KEY}`;
+    const url = `api/location`;
     const data = await getData(url);
 
     if (data) {
@@ -76,8 +73,8 @@ const DataProvider = ({ children }) => {
       localStorage.getItem('info') &&
       !JSON.parse(localStorage.getItem('info')).default
     ) {
-      const { lat, lon, unit } = JSON.parse(localStorage.getItem('info'));
-      setCallInfo({ lat, lon, unit });
+      const info = JSON.parse(localStorage.getItem('info'));
+      setCallInfo(info);
     } else setDefaultInfo();
   }, []);
 
