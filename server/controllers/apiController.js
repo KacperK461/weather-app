@@ -39,11 +39,10 @@ const sendAutocomplete = async (req, res, next) => {
   if ((tokenInfo && tokenInfo.expires_in < Date.now()) || !tokenInfo) {
     tokenInfo = await generateToken();
     tokenInfo.expires_in += Date.now();
-    console.log(tokenInfo);
   }
 
   const response = await axios(
-    `${AUTOCOMPLETE_API_ENDPOINT}?q=${req.query.q}`,
+    `${AUTOCOMPLETE_API_ENDPOINT}?q='${encodeURIComponent(req.query.q)}'`,
     {
       headers: {
         Authorization: 'Bearer ' + tokenInfo.access_token,
