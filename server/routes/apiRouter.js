@@ -8,5 +8,6 @@ router.get('/forecast', catchAsync(apiController.sendForecast));
 router.get('/historical', catchAsync(apiController.sendHistoricalWeather));
 router.get('/location', catchAsync(apiController.sendLocation));
 router.get('/autocomplete', catchAsync(apiController.sendAutocomplete));
+router.get('/geocode', catchAsync(apiController.sendGeocode));
 
 export default router;

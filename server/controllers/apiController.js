@@ -1,13 +1,12 @@
 import axios from 'axios';
-import generateToken from '../services/hereToken.js';
+import getToken from '../services/hereToken.js';
 import env from '../config/variables.js';
 
 const WEATHER_API_ENDPOINT = 'https://api.openweathermap.org/data/2.5/onecall';
 const LOCATION_API_ENDPOINT = 'https://geolocation-db.com/json/';
 const AUTOCOMPLETE_API_ENDPOINT =
   'https://autocomplete.search.hereapi.com/v1/autocomplete';
-
-let tokenInfo;
+const GEOCODE_API_ENDPOINT = 'https://geocode.search.hereapi.com/v1/geocode';
 
 const sendForecast = async (req, res, next) => {
   const { lat, lon, units } = req.query;
@@ -36,16 +35,26 @@ const sendLocation = async (req, res, next) => {
 };
 
 const sendAutocomplete = async (req, res, next) => {
-  if ((tokenInfo && tokenInfo.expires_in < Date.now()) || !tokenInfo) {
-    tokenInfo = await generateToken();
-    tokenInfo.expires_in += Date.now();
-  }
-
+  const token = await getToken();
   const response = await axios(
     `${AUTOCOMPLETE_API_ENDPOINT}?q='${encodeURIComponent(req.query.q)}'`,
     {
       headers: {
-        Authorization: 'Bearer ' + tokenInfo.access_token,
+        Authorization: 'Bearer ' + token,
+      },
+    }
+  );
+
+  res.json(response.data);
+};
+
+const sendGeocode = async (req, res, next) => {
+  const token = await getToken();
+  const response = await axios(
+    `${GEOCODE_API_ENDPOINT}?q='${encodeURIComponent(req.query.q)}'`,
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
       },
     }
   );
@@ -58,4 +67,5 @@ export default {
   sendHistoricalWeather,
   sendLocation,
   sendAutocomplete,
+  sendGeocode,
 };

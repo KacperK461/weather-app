@@ -37,4 +37,15 @@ const generateToken = async () => {
   return response.data;
 };
 
-export default generateToken;
+let tokenInfo;
+
+const getToken = async () => {
+  if ((tokenInfo && tokenInfo.expires_in < Date.now()) || !tokenInfo) {
+    tokenInfo = await generateToken();
+    tokenInfo.expires_in += Date.now();
+  }
+
+  return tokenInfo.access_token;
+};
+
+export default getToken;
