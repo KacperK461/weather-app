@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import City from './components/City';
+import City from './components/PlaceAutocomplete';
 import Units from './components/Units';
 
 const Navbar = () => {
@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav>
       <ul>
         <li>
-          <City />
+          <PlaceAutocomplete />
         </li>
         <li>
           <Units />
