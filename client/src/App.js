@@ -1,4 +1,5 @@
-import Navbar from './Navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
+import './styles/global.scss';
 
 const App = () => {
   return (

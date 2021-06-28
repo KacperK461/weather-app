@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import PlaceAutocomplete from './components/PlaceAutocomplete';
-import Units from './components/Units';
+import PlaceAutocomplete from '../PlaceAutocomplete/PlaceAutocomplete';
+import Units from '../Units/Units';
+// import './index.scss';
 
 const Navbar = () => {
   return (
