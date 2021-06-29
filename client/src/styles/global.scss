@@ -1,0 +1,15 @@
+:root {
+  --primary-color: #4897fa;
+  --secondary-color: #ffffff;
+}
+
+body {
+  background: linear-gradient(
+    15deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+}
