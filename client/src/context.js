@@ -24,8 +24,8 @@ const DataProvider = ({ children }) => {
     }
 
     setForecast(data);
-    return data;
     setLoading && setLoading(false);
+    return data;
   };
 
   const fetchHistoricalWeather = async (time, index, setLoading, setError) => {
@@ -57,6 +57,7 @@ const DataProvider = ({ children }) => {
         lat: data.latitude,
         lon: data.longitude,
         unit: 'metric',
+        address: data.country_name + (data.city ? `, ${data.city}` : ''),
       });
     } else {
       setCallInfo({
@@ -64,6 +65,7 @@ const DataProvider = ({ children }) => {
         lon: -73.935242,
         unit: 'metric',
         default: true,
+        address: 'USA, New York',
       });
     }
   };

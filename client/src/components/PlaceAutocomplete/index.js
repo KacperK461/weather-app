@@ -67,7 +67,7 @@ const PlaceAutocomplete = () => {
       const { lat, lng } = items[0].position;
 
       setCallInfo((prevState) => {
-        return { ...prevState, lat, lon: lng };
+        return { ...prevState, lat, lon: lng, address };
       });
       setError(false);
     } else setError(true);
