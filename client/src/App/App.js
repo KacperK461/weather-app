@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import PlaceAutocomplete from '../components/PlaceAutocomplete';
-import Units from '../components/Units';
-import useData from '../hooks/useData';
+import Toolbar from '../components/Toolbar/Toolbar';
 import './App.scss';
 
 const App = () => {
-  const { callInfo } = useData();
-
   return (
     <>
-      <h2>{callInfo && callInfo.address}</h2>
-      <Navbar>
-        <PlaceAutocomplete />
-        <Units />
-      </Navbar>
+      <Toolbar />
     </>
   );
 };

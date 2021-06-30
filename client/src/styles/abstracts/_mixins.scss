@@ -1,2 +1,17 @@
+@use './variables' as *;
 
+@mixin pseudo($content: '', $position: absolute) {
+  content: $content;
+  position: $position;
+  display: block;
+}
 
+@mixin transition($property: all) {
+  transition: $property $timing $timing-function;
+}
+
+@mixin animate($name) {
+  animation: $name;
+  animation-duration: $timing;
+  animation-timing-function: $timing-function;
+}

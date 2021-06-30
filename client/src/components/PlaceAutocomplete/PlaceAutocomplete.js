@@ -74,7 +74,7 @@ const PlaceAutocomplete = () => {
   };
 
   return (
-    <div>
+    <div className='autocomplete'>
       <input
         ref={input}
         value={address}
@@ -83,6 +83,7 @@ const PlaceAutocomplete = () => {
         onBlur={() => setFocus(false)}
         onKeyDown={(event) => handleOnKeyDown(event)}
         onClick={() => setFocused({ index: -1, title: null })}
+        className='autocomplete__input'
       />
       {focus && address && (
         <Autocomplete

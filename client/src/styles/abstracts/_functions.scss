@@ -1,0 +1,6 @@
+@use './variables';
+@use "sass:math";
+
+@function calcBurgerIndent($width, $height) {
+  @return math.div($width - $height * 3, 2) + math.div($height, 2);
+}
