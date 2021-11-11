@@ -1,37 +1,38 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url) => {
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
-  const [error, setError] = useState({ hasError: false, err: null });
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null); // loading, error, done
 
   const getData = async (url) => {
+    setStatus('loading');
     let data;
 
     try {
-      const response = await fetch(url);
-      if (response.status >= 400)
-        throw new Error(`Error: ${response.status} when call: ${url}`);
-
-      data = await response.json();
+      data = await call(url);
     } catch (err) {
-      setError({ hasError: true, err });
-      setLoading(false);
-
-      return false;
+      setError(err);
+      setStatus('error');
     }
 
     setData(data);
-    setLoading(false);
-
-    return data;
+    setError(null);
+    setStatus('done');
   };
 
-  useEffect(() => {
-    if (url) getData(url);
-  }, [url]);
+  const call = async (url) => {
+    const response = await fetch(url);
 
-  return { loading, data, error, getData };
+    if (response.status >= 400)
+      throw new Error(`Error: ${response.status} when call: ${url}`);
+
+    return await response.json();
+  };
+
+  useEffect(() => url && getData(url), [url]);
+
+  return { status, error, data, getData };
 };
 
 export default useFetch;

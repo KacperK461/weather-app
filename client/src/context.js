@@ -4,63 +4,47 @@ import useFetch from './hooks/useFetch';
 const DataContext = React.createContext();
 
 const DataProvider = ({ children }) => {
-  const [forecast, setForecast] = useState(null);
-  const [historicalWeather, setHistoricalWeather] = useState({});
-  const [callInfo, setCallInfo] = useState(null);
-  const { getData } = useFetch();
+  const forecast = useFetch();
+  const historicalWeather = [
+    useFetch(),
+    useFetch(),
+    useFetch(),
+    useFetch(),
+    useFetch(),
+  ];
+  const location = useFetch();
 
-  const fetchForecast = async (setLoading, setError) => {
-    setLoading && setLoading(true);
-    setError && setError(false);
-    if (!callInfo) return;
+  const [callProps, setCallProps] = useState({});
 
-    const url = `/api/forecast?lat=${callInfo?.lat}&lon=${callInfo?.lon}&units=${callInfo?.unit}`;
-    const data = await getData(url);
+  const fetchForecast = async () => {
+    if (!callProps) return;
 
-    if (!data) {
-      setError && setError(true);
-      setLoading && setLoading(false);
-      return;
-    }
-
-    setForecast(data);
-    setLoading && setLoading(false);
-    return data;
+    const url = `/api/forecast?lat=${callProps?.lat}&lon=${callProps?.lon}&units=${callProps?.unit}`;
+    await forecast.getData(url);
   };
 
-  const fetchHistoricalWeather = async (time, index, setLoading, setError) => {
-    setLoading && setLoading(true);
-    setError && setError(false);
-    if (!callInfo) return;
+  const fetchHistoricalWeather = async (time, index) => {
+    if (!callProps) return;
 
-    const url = `/api/historical?lat=${callInfo.lat}&lon=${callInfo.lon}&units=${callInfo.unit}&dt=${time}`;
-    const data = await getData(url);
-
-    if (!data) {
-      setError && setError(true);
-      setLoading && setLoading(false);
-      return;
-    }
-
-    setHistoricalWeather((prevState) => {
-      return { ...prevState, [index]: data };
-    });
-    setLoading && setLoading(false);
+    const url = `/api/historical?lat=${callProps?.lat}&lon=${callProps?.lon}&units=${callProps?.unit}&dt=${time}`;
+    await historicalWeather[index].getData(url);
   };
 
-  const setDefaultInfo = async () => {
+  const setDefaultCallProps = async () => {
     const url = `api/location`;
-    const data = await getData(url);
+    await location.getData(url);
 
-    if (data) {
-      setCallInfo({
-        lat: data.latitude,
-        lon: data.longitude,
+    if (location.data) {
+      setCallProps({
+        lat: location.data.latitude,
+        lon: location.data.longitude,
         unit: 'metric',
-        address: data.country_name + (data.city ? `, ${data.city}` : ''),
+        address:
+          location.data.country_name +
+          (location.data.city ? `, ${location.data.city}` : ''),
       });
     } else {
-      setCallInfo({
+      setCallProps({
         lat: 40.73061,
         lon: -73.935242,
         unit: 'metric',
@@ -71,18 +55,15 @@ const DataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (
-      localStorage.getItem('info') &&
-      !JSON.parse(localStorage.getItem('info')).default
-    ) {
-      const info = JSON.parse(localStorage.getItem('info'));
-      setCallInfo(info);
-    } else setDefaultInfo();
+    const props = localStorage.getItem('callProps');
+    if (props && !JSON.parse(props).default) setCallProps(JSON.parse(props));
+    else setDefaultCallProps();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('info', JSON.stringify(callInfo));
-  }, [callInfo]);
+  useEffect(
+    () => localStorage.setItem('callProps', JSON.stringify(callProps)),
+    [callProps]
+  );
 
   return (
     <DataContext.Provider
@@ -91,8 +72,8 @@ const DataProvider = ({ children }) => {
         historicalWeather,
         fetchForecast,
         fetchHistoricalWeather,
-        callInfo,
-        setCallInfo,
+        callProps,
+        setCallProps,
       }}>
       {children}
     </DataContext.Provider>
