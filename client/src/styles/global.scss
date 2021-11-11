@@ -4,30 +4,24 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-weight: 100;
 }
 
 :root {
-  // --primary-color: #4897fa;
-  // --primary-color2: #488cfa;
-  // --secondary-color: #87b2e6;
-  // --primary-color: #000000;
-  // --secondary-color: #cf1da9;
-  // --clr-primary: #43ace8;
-  // --clr-secondary: #a5cde9;
-  // --clr-trinary: #2f424f;
-  // --clr-title: #2f424f;
-  --clr-primary: #35b6db;
-  --clr-secondary: rgb(201, 151, 209);
-  --clr-accent: #344a53;
-
-  --clr-nav-background2: rgba(53, 182, 219, 0.4);
-  --clr-nav-background: rgb(201, 151, 209, 0.4);
+  --clr-primary: #483f7a;
+  --clr-secondary: rgba(187, 84, 183, 0.69);
+  --clr-white: #ffffff;
 }
 
 body {
-  background: linear-gradient(15deg, var(--clr-primary), var(--clr-secondary));
+  background: linear-gradient(
+    180deg,
+    var(--clr-primary) 0%,
+    var(--clr-primary) 55.21%,
+    var(--clr-secondary) 100%
+  );
   background-attachment: fixed;
-  font-family: Helvetica;
+  font-family: 'Roboto', sans-serif;
 }
 
 button {
