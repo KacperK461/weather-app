@@ -1,0 +1,78 @@
+@use '../../styles' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: $padding;
+}
+
+.toggler {
+  display: flex;
+}
+
+.title {
+  font-size: $title-size;
+  line-height: $title-size;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+.search {
+  color: var(--clr-white);
+  font-size: $title-size + 0.625;
+  transform: translateY(-5px);
+}
+
+.burger {
+  @include transition;
+  $burger-height: 0.5px;
+  $burger-width: 27px;
+  $burger-spacing: 10px;
+
+  position: relative;
+
+  height: $burger-height;
+  width: $burger-width;
+  background-color: var(--clr-white);
+
+  transform: translateY($burger-spacing);
+
+  &::after {
+    @include pseudo;
+    @include transition;
+
+    top: $burger-spacing;
+
+    height: $burger-height;
+    width: $burger-width;
+    background-color: var(--clr-white);
+  }
+
+  &::before {
+    @include pseudo;
+    @include transition;
+
+    top: -$burger-spacing;
+
+    height: $burger-height;
+    width: $burger-width;
+    background-color: var(--clr-white);
+  }
+
+  &--active {
+    background: transparent;
+    transform: translateY($burger-spacing) rotate(720deg);
+
+    &::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+  }
+}

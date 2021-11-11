@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import Toolbar from '../components/Toolbar/Toolbar';
+import Header from '../components/Header/Header';
 import './App.scss';
 
 const App = () => {
+  const [toggleNavbar, setToggleNavbar] = useState(false);
+
   return (
     <>
-      <Toolbar />
+      <Header toggleNavbar={toggleNavbar} setToggleNavbar={setToggleNavbar} />
     </>
   );
 };

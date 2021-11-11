@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
 *,
 ::before,
 ::after {
@@ -22,6 +24,7 @@ body {
   );
   background-attachment: fixed;
   font-family: 'Roboto', sans-serif;
+  color: var(--clr-white);
 }
 
 button {
