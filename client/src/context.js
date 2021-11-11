@@ -55,8 +55,9 @@ const DataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const props = localStorage.getItem('callProps');
-    if (props && !JSON.parse(props).default) setCallProps(JSON.parse(props));
+    const props = JSON.parse(localStorage.getItem('callProps'));
+    if (props && Object.keys(props).length && !props.default)
+      setCallProps(props);
     else setDefaultCallProps();
   }, []);
 
